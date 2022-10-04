@@ -10,14 +10,14 @@ app = Flask(__name__)
 @app.route("/webhook", methods=['POST'])
 def webhook():
 
-    def LongPosition(client):
+    def LongPosition(client,lev):
         assets = client.futures_account_balance()
         for asset in assets:
           if "USDT" in asset.values():
             balance = float(asset["balance"])
 
         markPrice = float(client.futures_mark_price(symbol="BTCUSDT")["markPrice"])
-        quot = math.floor((balance/markPrice)*(95/100)*1000)/1000
+        quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
 
         params = {"symbol":"BTCUSDT",
                 "type":"MARKET",
@@ -42,14 +42,14 @@ def webhook():
         ExitLong = client.futures_create_order(**params)
 
 
-    def ShortPosition(client):
+    def ShortPosition(client,lev):
         assets = client.futures_account_balance()
         for asset in assets:
           if "USDT" in asset.values():
             balance = float(asset["balance"])
 
         markPrice = float(client.futures_mark_price(symbol="BTCUSDT")["markPrice"])
-        quot = math.floor((balance/markPrice)*(95/100)*1000)/1000
+        quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
 
         params = {"symbol":"BTCUSDT",
                 "type":"MARKET",
@@ -76,19 +76,21 @@ def webhook():
     try:
         data = json.loads(request.data)
         order = data["order"]
+        lev = data["leverage"]
         api_key = data["api_key"]
         api_secret = data["api_secret"]
         
         client = Client(api_key, api_secret, testnet=False)
+        client.futures_change_leverage(**{"symbol":"BTCUSDT","leverage":lev})
 
         if order == "LongPosition":
-            LongPosition(client)
+            LongPosition(client,lev)
 
         elif order == "ExitLongPosition":
             ExitLongPosition(client)
           
         elif order == "ShortPosition":
-            ShortPosition(client)
+            ShortPosition(client,lev)
 
         elif order == "ExitShortPosition":
             ExitShortPosition(client)
