@@ -13,13 +13,13 @@ def webhook():
     def LongPosition(client,lev):
         assets = client.futures_account_balance()
         for asset in assets:
-          if "USDT" in asset.values():
+          if "BUSD" in asset.values():
             balance = float(asset["balance"])
 
-        markPrice = float(client.futures_mark_price(symbol="BTCUSDT")["markPrice"])
+        markPrice = float(client.futures_mark_price(symbol="BTCBUSD")["markPrice"])
         quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
 
-        params = {"symbol":"BTCUSDT",
+        params = {"symbol":"BTCBUSD",
                 "type":"MARKET",
                 "side":"BUY",
                 "quantity":quot}
@@ -31,9 +31,9 @@ def webhook():
             LongPos = client.futures_create_order(**params)
             
     def ExitLongPosition(client):
-        qty = float(client.futures_position_information(symbol="BTCUSDT")[0]["positionAmt"])
+        qty = float(client.futures_position_information(symbol="BTCBUSD")[0]["positionAmt"])
         params = {
-            "symbol":"BTCUSDT",
+            "symbol":"BTCBUSD",
             "side":"SELL",
             "type":'MARKET',
             "quantity":qty,
@@ -45,13 +45,13 @@ def webhook():
     def ShortPosition(client,lev):
         assets = client.futures_account_balance()
         for asset in assets:
-          if "USDT" in asset.values():
+          if "BUSD" in asset.values():
             balance = float(asset["balance"])
 
-        markPrice = float(client.futures_mark_price(symbol="BTCUSDT")["markPrice"])
+        markPrice = float(client.futures_mark_price(symbol="BTCBUSD")["markPrice"])
         quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
 
-        params = {"symbol":"BTCUSDT",
+        params = {"symbol":"BTCBUSD",
                 "type":"MARKET",
                 "side":"SELL",
                 "quantity":quot}
@@ -63,9 +63,9 @@ def webhook():
             ShortPos = client.futures_create_order(**params)
 
     def ExitShortPosition(client):
-        qty = -(float(client.futures_position_information(symbol="BTCUSDT")[0]["positionAmt"]))
+        qty = -(float(client.futures_position_information(symbol="BTCBUSD")[0]["positionAmt"]))
         params = {
-            "symbol":"BTCUSDT",
+            "symbol":"BTCBUSD",
             "side":"BUY",
             "type":'MARKET',
             "quantity":qty,
@@ -81,7 +81,7 @@ def webhook():
         api_secret = data["api_secret"]
         
         client = Client(api_key, api_secret, testnet=False)
-        client.futures_change_leverage(**{"symbol":"BTCUSDT","leverage":lev})
+        client.futures_change_leverage(**{"symbol":"BTCBUSD","leverage":lev})
 
         if order == "LongPosition":
             LongPosition(client,lev)
