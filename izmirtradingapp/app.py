@@ -98,6 +98,28 @@ def webhook():
             }
         ExitShort = client.futures_create_order(**params)
 
+    
+    def LongTehlikesi(client):
+        symbolInfo = client.futures_position_information(symbol="BTCBUSD")[0]
+        eP = float(symbolInfo["entryPrice"])
+        mP = float(symbolInfo["markPrice"])
+        amnt = float(symbolInfo["positionAmt"])
+
+        if mP > eP and amnt>0:
+          ExitLongPosition(client)
+          client.futures_cancel_all_open_orders(**{"symbol":"BTCBUSD"})
+           
+
+    def ShortTehlikesi(client):
+        symbolInfo = client.futures_position_information(symbol="BTCBUSD")[0]
+        eP = float(symbolInfo["entryPrice"])
+        mP = float(symbolInfo["markPrice"])
+        amnt = float(symbolInfo["positionAmt"])
+
+        if mP < eP and amnt<0:
+          ExitShortPosition(client)
+          client.futures_cancel_all_open_orders(**{"symbol":"BTCBUSD"})
+
     try:
         data = json.loads(request.data)
         order = data["order"]
@@ -119,6 +141,12 @@ def webhook():
 
         elif order == "ExitShortPosition":
             ExitShortPosition(client)
+
+        elif order == "LongTehlikesi":
+            LongTehlikesi(client)
+
+        elif order == "ShortTehlikesi":
+            ShortTehlikesi(client)
 
     except Exception as e:
         print(e)
