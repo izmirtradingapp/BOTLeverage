@@ -16,10 +16,10 @@ def webhook():
           if "BUSD" in asset.values():
             balance = float(asset["balance"])
 
-        markPrice = float(client.futures_mark_price(symbol="BTCBUSD")["markPrice"])
+        markPrice = float(client.futures_mark_price(symbol="ETHBUSD")["markPrice"])
         quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
 
-        params = {"symbol":"BTCBUSD",
+        params = {"symbol":"ETHBUSD",
                 "type":"MARKET",
                 "side":"BUY",
                 "quantity":quot}
@@ -29,11 +29,11 @@ def webhook():
             LongPos = client.futures_create_order(**params)
         except:
             LongPos = client.futures_create_order(**params)
-
-        client.futures_cancel_all_open_orders(**{"symbol":"BTCBUSD"})
-        eP = float(client.futures_position_information(symbol="BTCBUSD")[0]["entryPrice"])
+        """
+        client.futures_cancel_all_open_orders(**{"symbol":"ETHBUSD"})
+        eP = float(client.futures_position_information(symbol="ETHBUSD")[0]["entryPrice"])
         sL = eP -  100*((eP - eP*98/100)//100+1)
-        params = {"symbol":"BTCBUSD",
+        params = {"symbol":"ETHBUSD",
                   "type":"STOP_MARKET",
                   "side":"SELL",
                   "quantity":quot,
@@ -41,12 +41,12 @@ def webhook():
                   "workingType":"MARK_PRICE",
                   "closePosition":"true"}
         stopLoss = client.futures_create_order(**params)
-
+        """
             
     def ExitLongPosition(client):
-        qty = float(client.futures_position_information(symbol="BTCBUSD")[0]["positionAmt"])
+        qty = float(client.futures_position_information(symbol="ETHBUSD")[0]["positionAmt"])
         params = {
-            "symbol":"BTCBUSD",
+            "symbol":"ETHBUSD",
             "side":"SELL",
             "type":'MARKET',
             "quantity":qty,
@@ -61,10 +61,10 @@ def webhook():
           if "BUSD" in asset.values():
             balance = float(asset["balance"])
 
-        markPrice = float(client.futures_mark_price(symbol="BTCBUSD")["markPrice"])
+        markPrice = float(client.futures_mark_price(symbol="ETHBUSD")["markPrice"])
         quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
 
-        params = {"symbol":"BTCBUSD",
+        params = {"symbol":"ETHBUSD",
                 "type":"MARKET",
                 "side":"SELL",
                 "quantity":quot}
@@ -74,11 +74,12 @@ def webhook():
             ShortPos = client.futures_create_order(**params)
         except:
             ShortPos = client.futures_create_order(**params)
-
-        client.futures_cancel_all_open_orders(**{"symbol":"BTCBUSD"})
-        eP = float(client.futures_position_information(symbol="BTCBUSD")[0]["entryPrice"])
+        
+        """
+        client.futures_cancel_all_open_orders(**{"symbol":"ETHBUSD"})
+        eP = float(client.futures_position_information(symbol="ETHBUSD")[0]["entryPrice"])
         sL = eP +  100*((eP*102/100-eP)//100+1)
-        params = {"symbol":"BTCBUSD",
+        params = {"symbol":"ETHBUSD",
                   "type":"STOP_MARKET",
                   "side":"BUY",
                   "quantity":quot,
@@ -86,11 +87,12 @@ def webhook():
                   "workingType":"MARK_PRICE",
                   "closePosition":"true"}
         stopLoss = client.futures_create_order(**params)
+        """
 
     def ExitShortPosition(client):
-        qty = -(float(client.futures_position_information(symbol="BTCBUSD")[0]["positionAmt"]))
+        qty = -(float(client.futures_position_information(symbol="ETHBUSD")[0]["positionAmt"]))
         params = {
-            "symbol":"BTCBUSD",
+            "symbol":"ETHBUSD",
             "side":"BUY",
             "type":'MARKET',
             "quantity":qty,
@@ -100,25 +102,25 @@ def webhook():
 
     
     def LongTehlikesi(client):
-        symbolInfo = client.futures_position_information(symbol="BTCBUSD")[0]
+        symbolInfo = client.futures_position_information(symbol="ETHBUSD")[0]
         eP = float(symbolInfo["entryPrice"])
         mP = float(symbolInfo["markPrice"])
         amnt = float(symbolInfo["positionAmt"])
 
         if mP > eP and amnt>0:
           ExitLongPosition(client)
-          client.futures_cancel_all_open_orders(**{"symbol":"BTCBUSD"})
+          client.futures_cancel_all_open_orders(**{"symbol":"ETHBUSD"})
            
 
     def ShortTehlikesi(client):
-        symbolInfo = client.futures_position_information(symbol="BTCBUSD")[0]
+        symbolInfo = client.futures_position_information(symbol="ETHBUSD")[0]
         eP = float(symbolInfo["entryPrice"])
         mP = float(symbolInfo["markPrice"])
         amnt = float(symbolInfo["positionAmt"])
 
         if mP < eP and amnt<0:
           ExitShortPosition(client)
-          client.futures_cancel_all_open_orders(**{"symbol":"BTCBUSD"})
+          client.futures_cancel_all_open_orders(**{"symbol":"ETHBUSD"})
 
     try:
         data = json.loads(request.data)
@@ -128,7 +130,7 @@ def webhook():
         api_secret = data["api_secret"]
         
         client = Client(api_key, api_secret, testnet=False)
-        client.futures_change_leverage(**{"symbol":"BTCBUSD","leverage":lev})
+        client.futures_change_leverage(**{"symbol":"ETHBUSD","leverage":lev})
 
         if order == "LongPosition":
             LongPosition(client,lev)
