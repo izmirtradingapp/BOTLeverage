@@ -17,7 +17,7 @@ def webhook():
             balance = float(asset["balance"])
 
         markPrice = float(client.futures_mark_price(symbol="ETHBUSD")["markPrice"])
-        quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
+        quot = math.floor((balance/markPrice)*(90/100)*1000*lev)/1000
 
         params = {"symbol":"ETHBUSD",
                 "type":"MARKET",
@@ -69,7 +69,7 @@ def webhook():
             balance = float(asset["balance"])
 
         markPrice = float(client.futures_mark_price(symbol="ETHBUSD")["markPrice"])
-        quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
+        quot = math.floor((balance/markPrice)*(90/100)*1000*lev)/1000
 
         params = {"symbol":"ETHBUSD",
                 "type":"MARKET",
