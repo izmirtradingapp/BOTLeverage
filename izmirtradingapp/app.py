@@ -28,7 +28,7 @@ def webhook():
 
         markPrice = float(client.futures_mark_price(symbol="ETHBUSD")["markPrice"])
         
-        for i in range(3):
+        for i in range(4):
             
             if i == 0:
                 quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
@@ -38,6 +38,9 @@ def webhook():
                 
             if i == 2:
                 quot = math.floor((balance/markPrice)*(85/100)*1000*lev)/1000
+                
+            if i == 3:
+                quot = math.floor((balance/markPrice)*(80/100)*1000*lev)/1000
 
             params = {"symbol":"ETHBUSD",
                     "type":"MARKET",
@@ -93,7 +96,7 @@ def webhook():
         markPrice = float(client.futures_mark_price(symbol="ETHBUSD")["markPrice"])
         
         for i in range(3):
-            
+        
             if i == 0:
                 quot = math.floor((balance/markPrice)*(95/100)*1000*lev)/1000
             
@@ -102,6 +105,9 @@ def webhook():
                 
             if i == 2:
                 quot = math.floor((balance/markPrice)*(85/100)*1000*lev)/1000
+                
+            if i == 3:
+                quot = math.floor((balance/markPrice)*(80/100)*1000*lev)/1000
                 
             params = {"symbol":"ETHBUSD",
                     "type":"MARKET",
