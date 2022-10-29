@@ -29,7 +29,7 @@ def webhook():
             LongPos = client.futures_create_order(**params)
         except:
             LongPos = client.futures_create_order(**params)
-        
+        """
         client.futures_cancel_all_open_orders(**{"symbol":"ETHBUSD"})
         eP = float(client.futures_position_information(symbol="ETHBUSD")[0]["entryPrice"])
         sL = eP*99/100
@@ -41,6 +41,7 @@ def webhook():
                   "workingType":"MARK_PRICE",
                   "closePosition":"true"}
         stopLoss = client.futures_create_order(**params)
+        """
   
             
     def ExitLongPosition(client):
@@ -75,7 +76,7 @@ def webhook():
         except:
             ShortPos = client.futures_create_order(**params)
         
-        
+        """
         client.futures_cancel_all_open_orders(**{"symbol":"ETHBUSD"})
         eP = float(client.futures_position_information(symbol="ETHBUSD")[0]["entryPrice"])
         sL = eP*101/100
@@ -87,7 +88,7 @@ def webhook():
                   "workingType":"MARK_PRICE",
                   "closePosition":"true"}
         stopLoss = client.futures_create_order(**params)
-        
+        """
 
     def ExitShortPosition(client):
         qty = -(float(client.futures_position_information(symbol="ETHBUSD")[0]["positionAmt"]))
