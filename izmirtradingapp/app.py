@@ -22,7 +22,8 @@ def webhook():
         params = {"symbol":"ETHBUSD",
                 "type":"MARKET",
                 "side":"BUY",
-                "quantity":quot}
+                "quantity":quot,
+                "reduceOnly":"false"}
         
         try:
             ExitShortPosition(client)
@@ -68,7 +69,8 @@ def webhook():
         params = {"symbol":"ETHBUSD",
                 "type":"MARKET",
                 "side":"SELL",
-                "quantity":quot}
+                "quantity":quot,
+                "reduceOnly":"false"}
         
         try:
             ExitLongPosition(client)
