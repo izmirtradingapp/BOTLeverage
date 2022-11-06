@@ -27,11 +27,11 @@ def webhook():
 
     def LongPosition(client,lev,symbol):
         try:
-            ExitShortPosition(client)
+            ExitShortPosition(client,symbol)
         except:
             pass
         try:
-            ExitLongPosition(client)
+            ExitLongPosition(client,symbol)
         except:
             pass
         
@@ -94,11 +94,11 @@ def webhook():
 
     def ShortPosition(client,lev,symbol):
         try:
-            ExitLongPosition(client)
+            ExitLongPosition(client,symbol)
         except:
             pass
         try:
-            ExitShortPosition(client)
+            ExitShortPosition(client,symbol)
         except:
             pass
         
