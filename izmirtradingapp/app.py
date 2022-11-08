@@ -38,7 +38,7 @@ def webhook():
         
         assets = client.futures_account_balance()
         for asset in assets:
-          if "BUSD" in asset.values():
+          if "USDT" in asset.values():
             balance = float(asset["balance"])
 
         markPrice = float(client.futures_mark_price(symbol=symbol)["markPrice"])
@@ -105,7 +105,7 @@ def webhook():
         
         assets = client.futures_account_balance()
         for asset in assets:
-          if "BUSD" in asset.values():
+          if "USDT" in asset.values():
             balance = float(asset["balance"])
 
         markPrice = float(client.futures_mark_price(symbol=symbol)["markPrice"])
