@@ -51,14 +51,14 @@ def webhook():
         params = {"symbol":symbol,
                 "type":"MARKET",
                 "side":"BUY",
-                "quantity":int(quot),
+                "quantity":float(quot),
                 "reduceOnly":"false"} 
         """
         params = {"symbol":symbol,
                   "type":"LIMIT",
                   "side":"BUY",
                   "price":price,
-                  "quantity":int(quot),
+                  "quantity":float(quot),
                   "timeInForce":"GTC"}
         """
 
@@ -81,7 +81,7 @@ def webhook():
             
     def ExitLongPosition(client,symbol):
         client.futures_cancel_all_open_orders(**{"symbol":symbol})
-        qty = int(client.futures_position_information(symbol=symbol)[0]["positionAmt"])
+        qty = float(client.futures_position_information(symbol=symbol)[0]["positionAmt"])
         params = {
             "symbol":symbol,
             "side":"SELL",
@@ -118,14 +118,14 @@ def webhook():
         params = {"symbol":symbol,
                 "type":"MARKET",
                 "side":"SELL",
-                "quantity":int(quot),
+                "quantity":float(quot),
                 "reduceOnly":"false"}
         """
         params = {"symbol":symbol,
             "type":"LIMIT",
             "side":"SELL",
             "price":price,
-            "quantity":int(quot),
+            "quantity":float(quot),
             "timeInForce":"GTC"}
         """
 
@@ -147,7 +147,7 @@ def webhook():
 
     def ExitShortPosition(client,symbol):
         client.futures_cancel_all_open_orders(**{"symbol":symbol})
-        qty = -(int(client.futures_position_information(symbol=symbol)[0]["positionAmt"]))
+        qty = -(float(client.futures_position_information(symbol=symbol)[0]["positionAmt"]))
         params = {
             "symbol":symbol,
             "side":"BUY",
