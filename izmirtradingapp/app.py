@@ -51,7 +51,7 @@ def webhook():
         params = {"symbol":symbol,
                 "type":"MARKET",
                 "side":"BUY",
-                "quantity":float(quot),
+                "quantity":quot,
                 "reduceOnly":"false"} 
         """
         params = {"symbol":symbol,
@@ -118,7 +118,7 @@ def webhook():
         params = {"symbol":symbol,
                 "type":"MARKET",
                 "side":"SELL",
-                "quantity":float(quot),
+                "quantity":quot,
                 "reduceOnly":"false"}
         """
         params = {"symbol":symbol,
