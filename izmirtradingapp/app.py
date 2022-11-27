@@ -38,16 +38,20 @@ def webhook():
         
         assets = client.futures_account_balance()
         for asset in assets:
-          if "USDT" in asset.values():
+          if "USDT" in asset.values() and "USDT" in symbol:
+            balance = float(asset["balance"])
+          if "BUSD" in asset.values() and "BUSD" in symbol:
             balance = float(asset["balance"])
 
         markPrice = float(client.futures_mark_price(symbol=symbol)["markPrice"])
         #price = get_rounded_price(price*99.9/100,symbol)
        
-            
-        quot = math.floor((balance/markPrice)*(80/100)*1000*lev)/1000
-
         
+        if "USDT" in symbol:
+            quot = math.floor((balance/markPrice)*(80/100)*1000*lev)/1000
+        if "BUSD" in symbol: 
+            quot = int(math.floor((balance/markPrice)*(80/100)*1000*lev)/1000)
+            
         params = {"symbol":symbol,
                 "type":"MARKET",
                 "side":"BUY",
@@ -63,7 +67,7 @@ def webhook():
         """
 
         LongPos = client.futures_create_order(**params)
-            
+
         """
         client.futures_cancel_all_open_orders(**{"symbol":symbol})
         eP = float(client.futures_position_information(symbol=symbol)[0]["entryPrice"])
@@ -77,11 +81,16 @@ def webhook():
                   "closePosition":"true"}
         stopLoss = client.futures_create_order(**params)
         """
-  
+        
             
     def ExitLongPosition(client,symbol):
+        
         client.futures_cancel_all_open_orders(**{"symbol":symbol})
-        qty = float(client.futures_position_information(symbol=symbol)[0]["positionAmt"])
+        if "USDT" in symbol:
+            qty = float(client.futures_position_information(symbol=symbol)[0]["positionAmt"])
+        if "BUSD" in symbol: 
+            qty = int(client.futures_position_information(symbol=symbol)[0]["positionAmt"])
+        
         params = {
             "symbol":symbol,
             "side":"SELL",
@@ -105,15 +114,19 @@ def webhook():
         
         assets = client.futures_account_balance()
         for asset in assets:
-          if "USDT" in asset.values():
+          if "USDT" in asset.values() and "USDT" in symbol:
+            balance = float(asset["balance"])
+          if "BUSD" in asset.values() and "BUSD" in symbol:
             balance = float(asset["balance"])
 
         markPrice = float(client.futures_mark_price(symbol=symbol)["markPrice"])
         #price = price = get_rounded_price(price*100.1/100,symbol)
 
-        
-        quot = math.floor((balance/markPrice)*(80/100)*1000*lev)/1000
-
+        if "USDT" in symbol:
+            quot = math.floor((balance/markPrice)*(80/100)*1000*lev)/1000
+        if "BUSD" in symbol: 
+            quot = int(math.floor((balance/markPrice)*(80/100)*1000*lev)/1000)
+            
         
         params = {"symbol":symbol,
                 "type":"MARKET",
@@ -147,7 +160,12 @@ def webhook():
 
     def ExitShortPosition(client,symbol):
         client.futures_cancel_all_open_orders(**{"symbol":symbol})
-        qty = -(float(client.futures_position_information(symbol=symbol)[0]["positionAmt"]))
+        if "USDT" in symbol:
+            qty = -(float(client.futures_position_information(symbol=symbol)[0]["positionAmt"]))
+        if "BUSD" in symbol: 
+            qty = -(int(client.futures_position_information(symbol=symbol)[0]["positionAmt"]))
+            
+        
         params = {
             "symbol":symbol,
             "side":"BUY",
